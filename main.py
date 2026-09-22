@@ -1,4 +1,4 @@
-from calculator import multiplicacion, resta
+from calculator import multiplicacion, resta, suma, division
 
 
 def healthcheck():
@@ -26,23 +26,25 @@ def main():
         print("\n=================================")
         print("       CALCULADORA DEVOPS")
         print("=================================")
-        print("1. Restar")
-        print("2. Multiplicar")
-        print("3. Healthcheck")
-        print("4. Salir")
+        print("1. Sumar")
+        print("2. Restar")
+        print("3. Multiplicar")
+        print("4. Dividir")
+        print("5. Healthcheck")
+        print("6. Salir")
         print("=================================")
 
         opcion = input("Seleccione una opción: ")
 
-        if opcion == "3":
+        if opcion == "5":
             healthcheck()
             continue
 
-        if opcion == "4":
+        if opcion == "6":
             print("\n¡Hasta luego!")
             break
 
-        if opcion not in {"1", "2"}:
+        if opcion not in {"1", "2", "3", "4"}:
             print("\nOpción no válida.")
             continue
 
@@ -53,12 +55,19 @@ def main():
 
         a, b = numeros
 
-        if opcion == "1":
-            resultado = resta(a, b)
-        else:
-            resultado = multiplicacion(a, b)
-
-        print(f"\nResultado: {resultado}")
+        try:
+            if opcion == "1":
+                resultado = suma(a, b)
+            elif opcion == "2":
+                resultado = resta(a, b)
+            elif opcion == "3":
+                resultado = multiplicacion(a, b)
+            elif opcion == "4":
+                resultado = division(a, b)
+            
+            print(f"\nResultado: {resultado}")
+        except ValueError as e:
+            print(f"\nError: {e}")
 
 
 if __name__ == "__main__":
