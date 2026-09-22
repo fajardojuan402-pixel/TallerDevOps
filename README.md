@@ -1,652 +1,86 @@
-# Taller práctico de DevOps: De código a producción
+# Solución del Taller DevOps: De Código a Producción
 
-## Descripción
+Este documento representa el informe final del taller práctico, demostrando el flujo completo de entrega de software mediante control de versiones, pruebas automatizadas, Integración Continua (CI) y contenerización con Docker.
 
-En este taller construiremos un flujo básico de DevOps utilizando una aplicación de calculadora desarrollada en Python.
+## 1. Funcionalidades y Pruebas
 
-El proyecto inicial contiene dos operaciones:
-
-- Resta
-- Multiplicación
-
-Durante el taller se deberán incorporar dos nuevas funcionalidades:
-
-- Suma
-- División
-
-Además, se crearán pruebas automatizadas para las funcionalidades agregadas y se configurará un pipeline de Integración Continua utilizando GitHub Actions.
-
-Finalmente, la aplicación será ejecutada mediante Docker y se provocará intencionalmente un error para observar cómo el pipeline lo detecta.
-
----
-
-## Objetivo
-
-Aplicar un flujo básico de DevOps pasando por las siguientes etapas:
-
-**Código → Pruebas → Git → GitHub → Integración Continua → Docker → Feedback → Corrección**
-
-Al finalizar el taller, el proyecto deberá tener:
-
-- Las operaciones de suma, resta, multiplicación y división.
-- Pruebas automatizadas.
-- Un pipeline de GitHub Actions.
-- Una imagen Docker.
-- La aplicación ejecutándose dentro de un contenedor.
-- Una validación básica del estado de la aplicación mediante un healthcheck.
-- Un ejemplo de fallo detectado automáticamente por el pipeline.
-
----
-
-## 1. Estructura inicial
-
-```text
-DevOps_WorkShop/
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-├── .gitignore
-├── Dockerfile
-├── README.md
-├── calculator.py
-├── main.py
-├── requirements.txt
-└── test_calculator.py
-```
-
----
-
-## 2. Requisitos
-
-Antes de comenzar, asegúrate de tener instalado:
-
-- Python 3.12 o superior.
-- Git.
-- Docker Desktop.
-- Visual Studio Code.
-- Una cuenta de GitHub.
-
-Puedes comprobar las instalaciones ejecutando:
-
-```bash
-python --version
-git --version
-docker --version
-```
-
----
-
-## 3. Obtener el proyecto
-
-Clona el repositorio proporcionado:
-
-```bash
-git clone URL_DEL_REPOSITORIO
-```
-
-Ingresa a la carpeta:
-
-```bash
-cd DevOps_WorkShop
-```
-
-Abre el proyecto en Visual Studio Code:
-
-```bash
-code .
-```
-
----
-
-## 4. Revisar la aplicación inicial
-
-La aplicación inicial contiene:
-
-- Resta.
-- Multiplicación.
-- Healthcheck.
-
-La lógica matemática está en `calculator.py`.
-
-La interfaz de consola está en `main.py`.
-
-Las pruebas iniciales están en `test_calculator.py`.
-
----
-
-## 5. Instalar las dependencias
-
-Se recomienda crear un entorno virtual:
-
-```bash
-python -m venv .venv
-```
-
-En Windows:
-
-```bash
-.venv\Scripts\activate
-```
-
-Instala las dependencias:
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## 6. Ejecutar la aplicación
-
-Ejecuta:
-
-```bash
-python main.py
-```
-
-La aplicación mostrará:
-
-```text
-=================================
-       CALCULADORA DEVOPS
-=================================
-1. Restar
-2. Multiplicar
-3. Healthcheck
-4. Salir
-=================================
-Seleccione una opción:
-```
-
-Prueba las operaciones disponibles.
-
----
-
-## 7. Healthcheck
-
-Selecciona:
-
-```text
-3. Healthcheck
-```
-
-Deberás obtener:
-
-```text
-=================================
-           HEALTHCHECK
-=================================
-Estado: OK
-Aplicación: Calculadora DevOps
-```
-
-Este healthcheck es una comprobación sencilla implementada dentro de la aplicación. Su objetivo es introducir el concepto de que una aplicación puede proporcionar información sobre su estado.
-
----
-
-# PARTE 1 — Agregar funcionalidades
-
-## 8. Agregar la función de suma
-
-La función debe recibir dos números y devolver su suma.
-
-Ejemplo:
-
-```python
-suma(10, 5)
-```
-
-Resultado:
-
-```text
-15
-```
-
----
-
-## 9. Agregar la función de división
-
-En `calculator.py`,
-
-La función debe:
-
-- Dividir correctamente dos números.
-- Evitar la división entre cero.
-- Generar un `ValueError` cuando el divisor sea `0`.
-
----
-
-## 10. Actualizar la interfaz
-
-Ahora modifica `main.py`.
-
-Agrega las nuevas funciones a la importación:
-
-Agrega las opciones:
-
-```text
-1. Sumar
-2. Restar
-3. Multiplicar
-4. Dividir
-5. Healthcheck
-6. Salir
-```
-
-La interfaz debe permitir utilizar las cuatro operaciones.
-
----
-
-# PARTE 2 — Pruebas automatizadas
-
-## 11. Crear la prueba de suma
-
-## 12. Crear las pruebas de división
-
-## 13. Ejecutar las pruebas localmente
-
-Ejecuta:
-
-```bash
-pytest
-```
-
-Todas las pruebas deberán pasar.
-
-El número de pruebas esperado después de completar el ejercicio será:
-
-```text
-5 passed
-```
+Se añadieron las funciones `suma` y `division` en el archivo `calculator.py`, asegurando el manejo de errores (como la división por cero). Además, se implementaron sus respectivas pruebas automatizadas en `test_calculator.py`.
 
 ### Evidencia 1
+A continuación se muestra el código implementado y la ejecución local exitosa de `pytest` con las 5 pruebas pasando.
 
-Incluye en el informe:
-
-- Código de `suma()`.
-- Código de `division()`.
-- Pruebas creadas.
-- Prueba de división entre cero.
-- Captura de `pytest` mostrando las pruebas exitosas.
+![Evidencia 1 - Funcionalidades y Pruebas locales](./evidencias/evidencia1.png)
 
 ---
 
-# PARTE 3 — Git y GitHub
+## 2. Pipeline Exitoso (GitHub Actions)
 
-## 14. Guardar los cambios
-
-Comprueba el estado:
-
-```bash
-git status
-```
-
-Agrega los cambios:
-
-```bash
-git add .
-```
-
-Crea un commit:
-
-```bash
-git commit -m "Agregar suma y division con pruebas"
-```
-
-Envía los cambios:
-
-```bash
-git push
-```
-
----
-
-# PARTE 4 — Integración Continua
-
-## 15. Revisar GitHub Actions
-
-El proyecto ya contiene:
-
-```text
-.github/workflows/ci.yml
-```
-
-Este workflow ejecuta automáticamente las pruebas cuando se realiza un `push` o un `pull request` hacia la rama `main`.
-
-El flujo es:
-
-```text
-GitHub
-   ↓
-GitHub Actions
-   ↓
-Configurar Python
-   ↓
-Instalar dependencias
-   ↓
-Ejecutar pytest
-   ↓
-Resultado
-```
-
-En GitHub, entra a:
-
-**Actions → CI**
-
-Comprueba que el pipeline finalice correctamente.
+Una vez empujado el código, GitHub Actions ejecutó el flujo de Integración Continua definido en `.github/workflows/ci.yml`.
 
 ### Evidencia 2
+Captura del pipeline de GitHub Actions ejecutando correctamente las pruebas tras el primer commit de funcionalidades.
 
-Incluye una captura del pipeline exitoso mostrando las pruebas aprobadas.
-
----
-
-# PARTE 5 — Docker
-
-## 16. Revisar el Dockerfile
-
-El proyecto contiene un `Dockerfile` que permite construir una imagen de la aplicación:
-
-```dockerfile
-FROM python:3.12-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY calculator.py main.py ./
-
-CMD ["python", "main.py"]
-```
+![Evidencia 2 - Pipeline Exitoso](./evidencias/evidencia2.png)
 
 ---
 
-## 17. Construir la imagen
+## 3. Construcción de la Imagen Docker
 
-Ejecuta:
-
-```bash
-docker build -t DevOps_WorkShop .
-```
-
-Comprueba que la imagen exista:
-
-```bash
-docker images
-```
+Se utilizó el `Dockerfile` provisto para empaquetar la aplicación y sus dependencias.
 
 ### Evidencia 3
+Construcción exitosa de la imagen Docker en el entorno local (`docker build -t devops_workshop .`).
 
-Incluye una captura donde se observe la construcción exitosa de la imagen Docker.
+![Evidencia 3 - Construcción de Docker](./evidencias/evidencia3.png)
 
 ---
 
-## 18. Ejecutar la aplicación con Docker
+## 4. Aplicación ejecutándose en Docker
 
-Ejecuta:
-
-```bash
-docker run -it DevOps_WorkShop
-```
-
-La aplicación deberá mostrar su menú.
-
-Prueba las operaciones y el healthcheck.
+Se verificó el correcto funcionamiento de la calculadora aislada dentro de un contenedor.
 
 ### Evidencia 4
+Calculadora y healthcheck funcionando dentro del contenedor (`docker run -it devops_workshop`).
 
-Incluye una captura donde se observe la aplicación ejecutándose dentro del contenedor.
+![Evidencia 4 - Aplicación en Docker](./evidencias/evidencia4.png)
 
 ---
 
-# PARTE 6 — Integrar Docker al pipeline
+## 5. Pipeline con Integración de Docker
 
-## 19. Modificar el workflow
-
-Ahora modifica:
-
-```text
-.github/workflows/ci.yml
-```
-
-Después del paso de pruebas, agrega un paso para construir la imagen:
-
-```yaml
-      - name: Construir imagen Docker
-        run: docker build -t DevOps_WorkShop .
-```
-
-El pipeline tendrá ahora:
-
-```text
-Código
-   ↓
-Instalar dependencias
-   ↓
-Ejecutar pruebas
-   ↓
-Construir imagen Docker
-   ↓
-Resultado
-```
-
-Guarda y sube los cambios:
-
-```bash
-git add .
-git commit -m "Integrar Docker al pipeline"
-git push
-```
-
-Revisa nuevamente:
-
-**GitHub → Actions**
+Se actualizó el flujo de trabajo (`ci.yml`) para incluir el paso de construcción de la imagen Docker después de que las pruebas automatizadas fuesen exitosas.
 
 ### Evidencia 5
+Pruebas y construcción de Docker ejecutándose correctamente en GitHub Actions.
 
-Incluye una captura donde se observe:
-
-- Las pruebas exitosas.
-- La construcción exitosa de la imagen Docker.
+![Evidencia 5 - Pipeline con Docker](./evidencias/evidencia5.png)
 
 ---
 
-# PARTE 7 — Provocar un fallo
+## 6. Detección de Errores (Pipeline Fallido)
 
-## 20. Introducir un error intencional
-
-Ahora vamos a provocar un error para comprobar que el pipeline puede detectarlo.
-
-En `calculator.py`, modifica temporalmente:
-
-```python
-def suma(a, b):
-    return a - b
-```
-
-La prueba continuará esperando:
-
-```python
-def test_suma():
-    assert suma(10, 5) == 15
-```
-
-Ejecuta localmente:
-
-```bash
-pytest
-```
-
-La prueba deberá fallar.
-
----
-
-## 21. Subir el error
-
-Guarda los cambios:
-
-```bash
-git add .
-git commit -m "Introducir error intencional"
-git push
-```
-
-Ve a:
-
-**GitHub → Actions**
-
-El pipeline deberá fallar porque la prueba de suma no se cumple.
+Se introdujo un error intencional en la función de suma (`return a - b`) para comprobar la eficacia de las pruebas y la CI.
 
 ### Evidencia 6
+El pipeline falló y detuvo el proceso debido a que la prueba automatizada detectó la discrepancia.
 
-Incluye una captura donde se observe:
-
-- El pipeline fallido.
-- La prueba que falló.
+![Evidencia 6 - Pipeline fallido](./evidencias/evidencia6.png)
 
 ---
 
-# PARTE 8 — Corregir el error
+## 7. Corrección y Pipeline Exitoso
 
-## 22. Corregir la función
-
-Regresa a `calculator.py` y corrige:
-
-```python
-def suma(a, b):
-    return a + b
-```
-
-Ejecuta:
-
-```bash
-pytest
-```
-
-Comprueba que todas las pruebas pasen.
-
----
-
-## 23. Subir la corrección
-
-Ejecuta:
-
-```bash
-git add .
-git commit -m "Corregir funcion suma"
-git push
-```
-
----
-
-## 24. Verificar el pipeline final
-
-Regresa a:
-
-**GitHub → Actions**
-
-El nuevo pipeline deberá ejecutarse correctamente.
-
-El ciclo completo será:
-
-```text
-Cambio
-  ↓
-Pruebas
-  ↓
-Pipeline
-  ↓
-Error
-  ↓
-Feedback
-  ↓
-Corrección
-  ↓
-Pruebas
-  ↓
-Pipeline exitoso
-```
+Se corrigió la función nuevamente a `return a + b`, restaurando el correcto funcionamiento.
 
 ### Evidencia 7
+Pipeline exitoso después de solucionar el error, completando el ciclo de retroalimentación de CI/CD.
 
-Incluye una captura donde se observe el pipeline exitoso después de corregir el error.
-
----
-
-# Evidencias del informe
-
-El documento Word debe contener:
-
-### Evidencia 1 — Funcionalidades y pruebas
-
-- `suma()`.
-- `division()`.
-- Pruebas automatizadas.
-- Prueba de división entre cero.
-- Ejecución local de `pytest`.
-
-### Evidencia 2 — Pipeline exitoso
-
-Pipeline de GitHub Actions ejecutando correctamente las pruebas.
-
-### Evidencia 3 — Construcción de Docker
-
-Construcción exitosa de la imagen.
-
-### Evidencia 4 — Aplicación en Docker
-
-Calculadora funcionando dentro del contenedor.
-
-### Evidencia 5 — Pipeline con Docker
-
-Pruebas y construcción de Docker ejecutándose correctamente.
-
-### Evidencia 6 — Pipeline fallido
-
-Pipeline después de introducir el error intencional.
-
-### Evidencia 7 — Pipeline corregido
-
-Pipeline exitoso después de solucionar el error.
+![Evidencia 7 - Pipeline corregido](./evidencias/evidencia7.png)
 
 ---
 
-# Reflexión final
-
-Responde:
+## Reflexión Final
 
 > **¿Qué aprendí durante el taller sobre DevOps y cómo contribuyen el control de versiones, las pruebas automatizadas, la Integración Continua, la automatización y Docker al proceso de entrega de software?**
-
-La respuesta debe relacionar la experiencia práctica del taller con los conceptos explicados durante la exposición.
-
----
-
-# Flujo final
-
-```text
-       Código
-          ↓
-         Git
-          ↓
-       GitHub
-          ↓
-   GitHub Actions
-          ↓
-        Pytest
-          ↓
-        Docker
-          ↓
-     Aplicación
-          ↓
-       Feedback
-          ↓
-      Corrección
-          ↓
-       CI final
-```
-
-## Concepto clave
-
-> **DevOps no consiste en utilizar muchas herramientas. Consiste en mejorar el flujo de entrega de software mediante colaboración, automatización, pruebas, integración y retroalimentación continua.**
+>
+> Durante este taller aprendí que DevOps no se trata solo de herramientas, sino de crear un flujo de trabajo confiable. El control de versiones (Git) nos dio un historial seguro, mientras que las pruebas automatizadas (pytest) y la Integración Continua (GitHub Actions) nos permitieron detectar y corregir errores automáticamente antes de que lleguen a producción (como vimos al introducir el fallo intencional). Finalmente, la automatización junto con Docker nos garantizó que la aplicación se entregue y ejecute en cualquier entorno sin problemas de dependencias.
